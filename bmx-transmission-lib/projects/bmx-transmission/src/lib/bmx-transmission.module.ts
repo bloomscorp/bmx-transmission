@@ -4,13 +4,13 @@ import { BmxTransmissionComponent } from './bmx-transmission.component';
 
 
 @NgModule({
-  declarations: [
-    BmxTransmissionComponent
-  ],
-  imports: [
-  ],
-  exports: [
-    BmxTransmissionComponent
-  ]
+    declarations: [
+        BmxTransmissionComponent
+    ],
+    imports: [
+    ],
+    exports: [
+        BmxTransmissionComponent
+    ]
 })
 export class BmxTransmissionModule { }
