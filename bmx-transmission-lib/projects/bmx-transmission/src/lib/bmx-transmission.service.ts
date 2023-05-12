@@ -106,6 +106,39 @@ export class BmxTransmissionService {
 		);
 	}
 
+
+    public executePatchPayload<T>(
+		url: string,
+		payload: T,
+		headers: HttpHeaders | undefined,
+		onPreExecute: () => void,
+		onPostExecute: (response: RaintreeResponse) => void,
+		onSuccess: (response: RaintreeResponse) => void,
+		onFailure: (error: string) => void,
+		onComplete: () => void,
+	): void {
+
+		onPreExecute();
+
+		this._http.patch<RaintreeResponse>(url, payload, {
+			headers: headers,
+		}).pipe(
+			catchError(this._httpErrorHandler.intercept)
+		).subscribe(
+			(response: RaintreeResponse) => {
+				onPostExecute(response);
+				if (response.success) onSuccess(response);
+				else onFailure(this._pastebox.isEmptyString(response.message) ? TransmissionMessageService.RESOURCE_VALIDATION_FAILED : response.message);
+			},
+			error => {
+				onFailure(error);
+				onComplete();
+			},
+			() => onComplete()
+		);
+	}
+
+
 	public executeFormPostPayload<T extends FormPayload>(
 		url: string,
 		payload: T,
