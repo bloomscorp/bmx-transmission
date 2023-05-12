@@ -20,7 +20,7 @@ export class BmxTransmissionService {
 
 	public executeBasicGet(
 		url: string,
-		headers: HttpHeaders,
+		headers: HttpHeaders | undefined,
 		onPreExecute: () => void,
 		onPostExecute: (response: string) => void,
 		onSuccess: (response: string) => void,
@@ -48,7 +48,7 @@ export class BmxTransmissionService {
 
 	public executeGetPayload<T extends RaintreeResponse, S>(
 		url: string,
-		headers: HttpHeaders,
+		headers: HttpHeaders | undefined,
 		onPreExecute: () => void,
 		onPostExecute: (response: S) => void,
 		onSuccess: (response: S) => void,
@@ -78,7 +78,7 @@ export class BmxTransmissionService {
 	public executePostPayload<T>(
 		url: string,
 		payload: T,
-		headers: HttpHeaders,
+		headers: HttpHeaders | undefined,
 		onPreExecute: () => void,
 		onPostExecute: (response: RaintreeResponse) => void,
 		onSuccess: (response: RaintreeResponse) => void,
@@ -109,7 +109,7 @@ export class BmxTransmissionService {
 	public executeFormPostPayload<T extends FormPayload>(
 		url: string,
 		payload: T,
-		headers: HttpHeaders,
+		headers: HttpHeaders | undefined,
 		onPreExecute: () => void,
 		onPostExecute: (response: RaintreeResponse) => void,
 		onSuccess: (response: RaintreeResponse) => void,
