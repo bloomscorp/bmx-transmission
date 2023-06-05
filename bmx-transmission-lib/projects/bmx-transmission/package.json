@@ -1,6 +1,6 @@
 {
   "name": "bmx-transmission",
-  "version": "0.0.6",
+  "version": "0.0.9",
   "peerDependencies": {
     "@angular/common": "^15.2.0",
     "@angular/core": "^15.2.0"
