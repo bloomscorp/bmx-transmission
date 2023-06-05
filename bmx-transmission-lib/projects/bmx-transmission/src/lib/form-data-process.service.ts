@@ -46,7 +46,7 @@ export class FormDataProcessService {
             else if (Array.isArray(payload[key])) {
                 payload[key].forEach((item: any, index: number) => {
                     if (item === null || item === undefined) return;
-                    else if (item) {
+                    else if (item instanceof File) {
                         formData.append(key, payload[key]);
                     }
                     else if (
