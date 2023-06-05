@@ -6,6 +6,7 @@ import { FormPayload } from './raintree/interface/form-payload';
 import { RaintreeResponse } from './raintree/interface/raintree-response';
 import { TransmissionMessageService } from './transmission-message.service';
 import { TransmissionPasteboxService } from './transmission-pastebox.service';
+import { FormDataProcessService } from './form-data-process.service';
 
 @Injectable({
     providedIn: 'root'
@@ -15,7 +16,8 @@ export class BmxTransmissionService {
     constructor(
 		private _http: HttpClient,
 		private _httpErrorHandler: HttpErrorHandlerService,
-		private _pastebox: TransmissionPasteboxService
+		private _pastebox: TransmissionPasteboxService,
+        private _formDataProcessing: FormDataProcessService
 	) { }
 
 	public executeBasicGet(
@@ -147,28 +149,19 @@ export class BmxTransmissionService {
 		onPostExecute: (response: RaintreeResponse) => void,
 		onSuccess: (response: RaintreeResponse) => void,
 		onFailure: (error: string) => void,
-		onComplete: () => void
+		onComplete: () => void,
+        multiLevelProcessing: boolean = false
 	): void {
 
 		onPreExecute();
 
-		const formData: FormData = new FormData();
+		var formData: FormData = new FormData();
 
-		Object.keys(payload).forEach((key) => {
-			
-			if (payload[key] === null || payload[key] === undefined) return;
-
-			if (Array.isArray(payload[key])) {
-				payload[key].forEach((item: number | string | File) => {
-					if (item === null || item === undefined) return;
-					formData.append(key, JSON.stringify(item));
-				})
-
-				return;
-			}
-			
-			formData.append(key, payload[key])
-		});
+		if (multiLevelProcessing) {
+            formData = this._formDataProcessing.multiLevelProcess(payload);
+        } else {
+            formData = this._formDataProcessing.singleLevelProcess(payload);
+        }
 
 		this._http.post<RaintreeResponse>(url, formData, {
 			headers: headers,
@@ -196,28 +189,19 @@ export class BmxTransmissionService {
 		onPostExecute: (response: RaintreeResponse) => void,
 		onSuccess: (response: RaintreeResponse) => void,
 		onFailure: (error: string) => void,
-		onComplete: () => void
+		onComplete: () => void,
+        multiLevelProcessing: boolean = false
 	): void {
 
 		onPreExecute();
 
-		const formData: FormData = new FormData();
+		var formData: FormData = new FormData();
 
-		Object.keys(payload).forEach((key) => {
-			
-			if (payload[key] === null || payload[key] === undefined) return;
-
-			if (Array.isArray(payload[key])) {
-				payload[key].forEach((item: number | string | File) => {
-					if (item === null || item === undefined) return;
-					formData.append(key, JSON.stringify(item));
-				})
-
-				return;
-			}
-			
-			formData.append(key, payload[key])
-		});
+        if (multiLevelProcessing) {
+            formData = this._formDataProcessing.multiLevelProcess(payload);
+        } else {
+            formData = this._formDataProcessing.singleLevelProcess(payload);
+        }
 
 		this._http.patch<RaintreeResponse>(url, formData, {
 			headers: headers,
