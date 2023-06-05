@@ -40,10 +40,15 @@ export class FormDataProcessService {
 
         Object.keys(payload).forEach((key) => {
             if (payload[key] === null || payload[key] === undefined) return;
-
+            else if (payload[key] instanceof File) {
+                formData.append(key, payload[key]);
+            }
             else if (Array.isArray(payload[key])) {
                 payload[key].forEach((item: any, index: number) => {
                     if (item === null || item === undefined) return;
+                    else if (item) {
+                        formData.append(key, payload[key]);
+                    }
                     else if (
                         !Array.isArray(item) &&
                         this.isObject(item) &&
